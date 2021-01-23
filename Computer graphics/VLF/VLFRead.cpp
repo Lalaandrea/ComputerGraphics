@@ -81,6 +81,7 @@ class FHDRaster {
    HDC mydc = GetDC(myconsole);*/
    COLORREF COLOR;
    int pixel =0;
+   cout<<"P6\n1920 1080 255\n";
   
    for(y=0;y<ScreenHeight;y++) {
      for(x=0;x<ScreenWidth;x++) {

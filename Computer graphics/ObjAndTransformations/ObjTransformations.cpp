@@ -69,6 +69,7 @@ class FHDRaster {
 
       COLORREF COLOR;
       int pixel = 0;
+      cout<<"P6\n1920 1080 255\n";
       for (y = 0; y < ScreenHigth; y++) {
         for (x = 0; x < ScreenWidth; x++) {
           COLOR = RGB(data[x][y][0], data[x][y][1], data[x][y][2]);
