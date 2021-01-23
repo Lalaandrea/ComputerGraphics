@@ -47,7 +47,7 @@ g++ VLFRead.cpp -o ReadVLF -lgdi32
 
 Video created with [Reading Obj, and make transformations](https://github.com/Lalaandrea/ComputerGraphics/blob/main/Computer%20graphics/ObjAndTransformations/ObjTransformations.cpp) 
 
-![Video](video.gif)
+![](video.gif)
 
 
 
