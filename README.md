@@ -7,5 +7,34 @@ Student: Laura Andrea Morales López
 
 Is made for Windows system.
 
+## Bresenham Line Drawing
+For [Bresenham Line Drawing](https://github.com/Lalaandrea/ComputerGraphics/blob/main/Computer%20graphics/LineDrawing/BresenhamDrawLines.cpp) compile as.
 
+```bash
+g++ BresenhamDrawLines.cpp -o Bresenham -lgdi32
+```
 ![Screenshot](Bresenham.PNG)
+
+## DDA Line Drawing
+For [DDA Line Drawing](https://github.com/Lalaandrea/ComputerGraphics/blob/main/Computer%20graphics/LineDrawing/DDALineDrawing.cpp) compile as.
+```bash
+g++ DDALineDrawing.cpp -o DDA -lgdi32
+```
+![Screenshot](DDA.PNG)
+
+## Reading Obj, and make transformations
+For [Reading Obj, and make transformations](https://github.com/Lalaandrea/ComputerGraphics/blob/main/Computer%20graphics/LineDrawing/BresenhamDrawLines.cpp) compile as.
+```bash
+g++ ObjTransformations.cpp -o ObjTrans -lgdi32
+```
+![Screenshot](ObjTransfrom.PNG)
+
+## Obj to VLF
+For [Obj to VLF](https://github.com/Lalaandrea/ComputerGraphics/blob/main/Computer%20graphics/VLF/ObjToVLF.cpp) compile as.
+```bash
+g++ ObjToVLF.cpp -o ObjToVLF
+```
+Get [VLF File](https://github.com/Lalaandrea/ComputerGraphics/blob/main/Computer%20graphics/VLF/mono.vlf)
+
+
+
