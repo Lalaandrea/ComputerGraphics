@@ -295,8 +295,8 @@ auto Transformations (float OperationMatrix[4][4], const float TransformOption){
 
 }
 
-auto Draw( auto x1, auto x2, auto y1, auto y2, auto z1, auto z2){
-
+auto Draw(){
+   int x1,x2,y1,y2,z1,z2;
   drawLine(0,ScreenHeight/2,ScreenWidth,ScreenHeight/2,255,255,255);
  drawLine(ScreenWidth/2,0,ScreenWidth/2,ScreenHeight,255,255,255);
  
@@ -399,12 +399,12 @@ auto ReadVLF(){
 int main(int argc, char * argv []) {
  
  FHDRaster * raster = new FHDRaster();
- int x1,x2,y1,y2,z1,z2;
+// int x1,x2,y1,y2,z1,z2;
 
 
 raster-> ReadVLF();
     
-raster-> Draw(x1,x2,y1,y2,z1,z2);
+raster-> Draw();
 
 
  raster->write();
