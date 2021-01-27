@@ -257,7 +257,7 @@ class FHDRaster {
                 }
               }
                 for(i=0;i<k;i+=2){
-                drawLine(PointsX[i], y, PointsX[i+1]+1 ,y,0,255,255); 
+                drawLine(PointsX[i], y, PointsX[i+1]+1 ,y,rand()%255,rand()%255,rand()%255); 
               }
             }
 
@@ -627,6 +627,7 @@ auto Draw(){
 
   
   int EdgesSize=Edges.size();
+
   
   for(int i=0; i<EdgesSize; i++){ 
     Vertexes=Edges[i];
@@ -707,7 +708,7 @@ auto DrawZbuffer(){
         
       }
       ZBufferFunction(ZBufferAuxiliar[0],ZBufferAuxiliar[1],ZBufferAuxiliar[2],ZBufferAuxiliar[3],ZBufferAuxiliar[4],ZBufferAuxiliar[5],ZBufferAuxiliar[6],ZBufferAuxiliar[7],ZBufferAuxiliar[8],rand()%255,rand()%255,rand()%255);
-     
+     //ScanLine(ZBufferAuxiliar[0],ZBufferAuxiliar[1],ZBufferAuxiliar[2],ZBufferAuxiliar[3],ZBufferAuxiliar[4],ZBufferAuxiliar[5]);
   }
   for(i=0;i<fvsz; i++){
      ZBufferAuxiliar.clear();

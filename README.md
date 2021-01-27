@@ -63,3 +63,6 @@ For [Reading VLF Oriented, ZBuffer and Scanline](https://github.com/Lalaandrea/C
 g++ VLFOrientedRead.cpp -o Read -lgdi32 
 ```
 ![Read](ZBuffer.PNG)
+
+##### Scanline Only
+![Scanlie](Scanline.PNG)
