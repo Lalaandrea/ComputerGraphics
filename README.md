@@ -49,5 +49,17 @@ Video created with [Reading Obj, and make transformations](https://github.com/La
 
 ![](video.gif)
 
+## Scanline, Zbuffer and VLF Oriented
 
+For [Create VLF Oriented](https://github.com/Lalaandrea/ComputerGraphics/blob/main/Computer%20graphics/ZBuffer/CreateVLFOriented.cpp) compile as.
+```bash
+g++ CreateVLFOriented.cpp -o VLFOriented
+```
+Get [VLF File](https://github.com/Lalaandrea/ComputerGraphics/blob/main/Computer%20graphics/ZBuffer/Omono.vlf)
 
+For [Reading VLF Oriented, ZBuffer and Scanline](https://github.com/Lalaandrea/ComputerGraphics/blob/main/Computer%20graphics/ZBuffer/VLFOrientedRead.cpp)
+
+```bash
+g++ VLFOrientedRead.cpp -o Read -lgdi32 
+```
+![Read](ZBuffer.PNG)
