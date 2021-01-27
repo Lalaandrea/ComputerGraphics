@@ -468,21 +468,21 @@ auto Transformations (float OperationMatrix[4][4], const int TransformOption){
       OperationMatrix[0][0]=1;
       OperationMatrix[0][1]=0;
       OperationMatrix[0][2]=0;
-      OperationMatrix[0][3]=0;
+      OperationMatrix[0][3]=TranslationX;
 
       OperationMatrix[1][0]=0;
       OperationMatrix[1][1]=1;
       OperationMatrix[1][2]=0;
-      OperationMatrix[1][3]=0;
+      OperationMatrix[1][3]=TranslationY;
 
       OperationMatrix[2][0]=0;
       OperationMatrix[2][1]=0;
       OperationMatrix[2][2]=1;
-      OperationMatrix[2][3]=0;
+      OperationMatrix[2][3]=TranslationZ;
 
-      OperationMatrix[3][0]=TranslationX;
-      OperationMatrix[3][1]=TranslationY;
-      OperationMatrix[3][2]=TranslationZ;
+      OperationMatrix[3][0]=0;
+      OperationMatrix[3][1]=0;
+      OperationMatrix[3][2]=0;
       OperationMatrix[3][3]=1;
     }
     else{
