@@ -21,27 +21,16 @@ const int PPM=0, ScreenHeight =720, ScreenWidth=1280; //win 0 == true;
 const string fl="Omono.vlf";
 
 //######################## transformation options #####################
-  const int TransformOption=2; //0=scale; 1=trans; 2=rot;
-  const int RotationAxis=1; //0=x; 1=y; 2=z;
-  const float ScaleY=0.5;
-  const float ScaleZ=0.5;
-  const float ScaleX=0.5;
-
-  const float TranslationX=2;
-  const float TranslationY=2;
-  const float TranslationZ=200;
-  const int Angle=0;
+  //0=scale; 1=trans; 2=rot;
+int Rotation=1;//0=x; 1=y; 2=z;
+ 
   float OperationMatrix[4][4];
 
 //###################################################################
 
+    int NumVertexes,NumFaces,NumEdges;
                   
 
-typedef struct Coordinates{
-    short x;
-    short y;
-    short z;
-}Coord;
 
 typedef struct DoubleCoordinates{
     double x;
@@ -60,9 +49,9 @@ typedef struct norm{
   double   dotz;
 }StructNormal;
 
-Coord aux;
+DoubleCoord aux;
 DoubleCoord DCoord;
-vector<Coord> CoordAux;
+vector<DoubleCoord> CoordAux;
 
 vector<int> Vertexes;
 vector<vector<int>> Faces;
@@ -73,6 +62,8 @@ vector<vector<int>> NotVisibleFaces;
 
 vector<StructNormal> NormalsOfFaces;
   vector<StructNormal> NVFNormals, VFNormals; //Not visible faces Normal faces// Visible Faces Normal faces
+
+ int xmin=99999, xmax=-99999, ymin=99999, ymax=-99999, zmin=99999, zmax=-99999;
 
 int FacesSize;
 
@@ -440,24 +431,32 @@ auto ZBufferFunction(int x1, int y1, int z1 ,int x2,int y2,  int z2, int x3, int
 }
 /*ZBuffer*/  
 
-auto Transformations (float OperationMatrix[4][4], const int TransformOption){
+auto Transformations (int TransformOption, int Angle, int RotationAxis, vector<DoubleCoord> CoordInput, int NumVertexes, float RateX, float RateY, float RateZ){
+    DoubleCoord temp;
+    vector<DoubleCoord> VectorCoordAux;
+    for(int i=0; i<NumVertexes; i++){
+      DoubleCoord DoubleCoordInput;
+      DoubleCoordInput.x=(double)CoordInput[i].x;
+      DoubleCoordInput.y=(double)CoordInput[i].y;
+      DoubleCoordInput.z=(double)CoordInput[i].z;
 
 
     float Theta= Angle*pi/180;
+       
     if(TransformOption==0){
-      OperationMatrix[0][0]=ScaleX;
+      OperationMatrix[0][0]=RateX;
       OperationMatrix[0][1]=0;
       OperationMatrix[0][2]=0;
       OperationMatrix[0][3]=0;
 
       OperationMatrix[1][0]=0;
-      OperationMatrix[1][1]=ScaleY;
+      OperationMatrix[1][1]=RateY;
       OperationMatrix[1][2]=0;
       OperationMatrix[1][3]=0;
 
       OperationMatrix[2][0]=0;
       OperationMatrix[2][1]=0;
-      OperationMatrix[2][2]=ScaleZ;
+      OperationMatrix[2][2]=RateZ;
       OperationMatrix[2][3]=0;
 
       OperationMatrix[3][0]=0;
@@ -469,17 +468,17 @@ auto Transformations (float OperationMatrix[4][4], const int TransformOption){
       OperationMatrix[0][0]=1;
       OperationMatrix[0][1]=0;
       OperationMatrix[0][2]=0;
-      OperationMatrix[0][3]=TranslationX;
+      OperationMatrix[0][3]=RateX;
 
       OperationMatrix[1][0]=0;
       OperationMatrix[1][1]=1;
       OperationMatrix[1][2]=0;
-      OperationMatrix[1][3]=TranslationY;
+      OperationMatrix[1][3]=RateY;
 
       OperationMatrix[2][0]=0;
       OperationMatrix[2][1]=0;
       OperationMatrix[2][2]=1;
-      OperationMatrix[2][3]=TranslationZ;
+      OperationMatrix[2][3]=RateZ;
 
       OperationMatrix[3][0]=0;
       OperationMatrix[3][1]=0;
@@ -551,7 +550,7 @@ auto Transformations (float OperationMatrix[4][4], const int TransformOption){
         OperationMatrix[3][3]=1;
       }
     }
-    float Points[4][1] = {{(float)DCoord.x},{(float)DCoord.y},{(float)DCoord.z},{1}};
+    float Points[4][1] = {{(float)DoubleCoordInput.x},{(float)DoubleCoordInput.y},{(float)DoubleCoordInput.z},{1}};
     float Scaled[4][1] = {{0},{0},{0},{0}};
 
     for (int row = 0; row < 4; row++) {
@@ -564,13 +563,15 @@ auto Transformations (float OperationMatrix[4][4], const int TransformOption){
       }
                     
     }
-    DCoord.x = Scaled[0][0]/Scaled[3][0];
-    DCoord.y = Scaled[1][0]/Scaled[3][0];
-    DCoord.z = Scaled[2][0]/Scaled[3][0];
 
-    aux.x=(int)(DCoord.x*1000);
-    aux.y=(int)(DCoord.y*1000);
-    aux.z=(int)(DCoord.z*1000);
+    temp.x = Scaled[0][0]/Scaled[3][0];
+    temp.y = Scaled[1][0]/Scaled[3][0];
+    temp.z = Scaled[2][0]/Scaled[3][0];
+
+     //cout<<temp.x<<" "<<temp.y<<" "<<temp.z<<endl;
+      VectorCoordAux.push_back(temp);
+    }
+    return VectorCoordAux;
 
 }
 
@@ -579,14 +580,14 @@ auto Normals(){
    int x1,x2,y1,y2,z1,z2;
   FacesSize=Faces.size();
   
-  Coordinates vecX, vecY, vecZ;
+  DoubleCoordinates vecX, vecY, vecZ;
   vecX.x=6; vecX.y=0; vecX.z=0;
   vecY.x=0; vecY.y=6; vecY.z=0;
   vecZ.x=0; vecZ.y=0; vecZ.z=6;
 
   for(int i=0; i<FacesSize; i++){
     StructNormal auxnormal;
-    Coordinates A,B,C;
+    DoubleCoordinates A,B,C;
     A=CoordAux[Faces[i][0]];
     B=CoordAux[Faces[i][1]];
     C=CoordAux[Faces[i][2]];
@@ -681,8 +682,42 @@ auto DrawZbuffer(){
   int HalfWidth=ScreenWidth/4, HalfHeight=ScreenHeight/4;
   int XPixels=HalfWidth/n; 
 
-  vector<int> ZBufferAuxiliar;
+  int HalfDeltaX=0, HalfDeltaY=0, HalfDeltaZ=0,CenterX,CenterY,CenterZ;
+
+ 
+  HalfDeltaX=(int (xmax-xmin)/2);
+  HalfDeltaY=(int (ymax-ymin)/2);
+  HalfDeltaZ=(int (zmax-zmin)/2);
+
+  CenterX=HalfDeltaX-xmax;
+  CenterY=HalfDeltaY-ymax;
+  CenterZ=HalfDeltaZ-zmax;
+    vector<int> ZBufferAuxiliar;
   Normals();
+
+  int Angle=0;
+
+
+  CoordAux=Transformations(2,Angle,0,CoordAux,NumVertexes,0,0,0);
+  
+  for( i=0;i<CoordAux.size(); i++){
+      for(j=0; j<3; j++){
+        x1 = (int) (CoordAux[Faces[i][j]].x);
+        y1 = (int) (CoordAux[Faces[i][j]].y);
+        z1 = (int) (CoordAux[Faces[i][j]].z);
+        
+      //cout<<x1<<" "<<y1<<" "<<z1<<endl;
+        
+      }
+  }
+   CoordAux=Transformations(2,180,0,CoordAux,NumVertexes,1,1,1);
+    CoordAux=Transformations(2,180,1,CoordAux,NumVertexes,1,1,1);
+
+  CoordAux=Transformations(2, Angle, Rotation, CoordAux, NumVertexes, 0, 0, 0);
+
+  CoordAux=Transformations(1, Angle, Rotation, CoordAux, NumVertexes, (float)CenterX, (float)CenterY, (float)CenterZ);
+
+
 
   for(i=0; i<FacesSize; i++){
     if(false){        //False Dibuja todas las caras NormalsOfFaces[i].dotz<=0
@@ -695,22 +730,30 @@ auto DrawZbuffer(){
     }
   }
   int fvsz=VisibleFaces.size(), fnsz=NotVisibleFaces.size();
+
+  CoordAux=Transformations(0,Angle,Rotation,CoordAux,NumVertexes,(float)XPixels,(float)XPixels,(float)XPixels);
+  CoordAux=Transformations(1,Angle,Rotation,CoordAux,NumVertexes,HalfWidth,HalfHeight,1);
+
+ 
+
   for( i=0;i<fvsz; i++){//XY
-    ZBufferAuxiliar.clear();
+
+
+   ZBufferAuxiliar.clear();
       for(j=0; j<3; j++){
-        x1 = (int) (CoordAux[ VisibleFaces[i][j] ].x*XPixels/1000+HalfWidth);
-        y1 = (int) ((HalfHeight)-(CoordAux[ VisibleFaces[i][j] ].y*XPixels)/1000);
-        x2 = (int) ((CoordAux[ VisibleFaces[i][(j+1)%3] ].x*XPixels)/1000+HalfWidth);
-        y2 = (int) ((HalfHeight)-(CoordAux[ VisibleFaces[i][(j+1)%3] ].y*XPixels/1000)); 
-        
+        x1 = (int) (CoordAux[Faces[i][j]].x);
+        y1 = (int) (CoordAux[Faces[i][j]].y);
+        z1 = (int) (CoordAux[Faces[i][j]].z);
         ZBufferAuxiliar.push_back((int)x1);
         ZBufferAuxiliar.push_back((int)y1);
-        ZBufferAuxiliar.push_back((int)CoordAux[ VisibleFaces[i][j] ].z*XPixels/1000+HalfWidth);
+        ZBufferAuxiliar.push_back((int)z1);
         
       }
+      //cout<<x1<<" "<<y1<<" "<<z1<<endl;
       ZBufferFunction(ZBufferAuxiliar[0],ZBufferAuxiliar[1],ZBufferAuxiliar[2],ZBufferAuxiliar[3],ZBufferAuxiliar[4],ZBufferAuxiliar[5],ZBufferAuxiliar[6],ZBufferAuxiliar[7],ZBufferAuxiliar[8],rand()%255,rand()%255,rand()%255);
      //ScanLine(ZBufferAuxiliar[0],ZBufferAuxiliar[1],ZBufferAuxiliar[2],ZBufferAuxiliar[3],ZBufferAuxiliar[4],ZBufferAuxiliar[5]);
   }
+  /*
   for(i=0;i<fvsz; i++){
      ZBufferAuxiliar.clear();
       for(j=0; j<3; j++){
@@ -755,6 +798,7 @@ auto DrawZbuffer(){
       ScanLine(ZBufferAuxiliar[0],ZBufferAuxiliar[1],ZBufferAuxiliar[2],ZBufferAuxiliar[3],ZBufferAuxiliar[4],ZBufferAuxiliar[5]);
 
   }
+  /**/
 }
 
 auto ReadVLF(){
@@ -765,19 +809,36 @@ auto ReadVLF(){
 
     const char *a=fl.c_str();
     FileInput=fopen(a,"rb");
-    int NumVertexes,NumFaces,NumEdges;
 
     fread(&NumVertexes,sizeof(int),1,FileInput);
     fread(&NumEdges,sizeof(int),1,FileInput);
     fread(&NumFaces,sizeof(int),1,FileInput);
 
+    //Get min and max
     for(i=0; i<NumVertexes; i++){
         fread(&DCoord,sizeof(DoubleCoord),1,FileInput);
-         
-        Transformations(OperationMatrix, TransformOption);
+
+        aux.x=DCoord.x;
+        aux.y=DCoord.y;
+        aux.z=DCoord.z;
+
+        if(aux.x>xmax)
+          xmax=aux.x;
+        if(aux.y>ymax)
+          ymax=aux.y;
+        if(aux.z>zmax)
+          zmax=aux.z;
+
+        if(aux.x<xmin)
+          xmin=aux.x;
+        if(aux.y<ymin)
+          ymin=aux.y;
+        if(aux.z<zmin)
+          zmin=aux.z;
 
         CoordAux.push_back(aux);
-    }   
+        //cout<<""<<aux.x<<"|"<<aux.y<<"|"<<aux.z<<"+"<<endl;     //Debug
+    }  
    
     for(i=0;i<NumEdges;i++){
         for(j=0;j<2;j++){
