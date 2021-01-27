@@ -8,6 +8,7 @@
 #include <sstream>
 #include <vector>
 #include <array>
+#define Inf -9999999999999999999999999999.99
 
 
 using namespace std;
@@ -28,8 +29,8 @@ const string fl="Omono.vlf";
 
   const float TranslationX=2;
   const float TranslationY=2;
-  const float TranslationZ=2;
-  const int Angle=270;
+  const float TranslationZ=200;
+  const int Angle=0;
   float OperationMatrix[4][4];
 
 //###################################################################
@@ -287,7 +288,7 @@ auto ZBufferValue(ZBufferCoefficent Coefficent,int x,int y)
 {
     double z = 0;
     if (Coefficent.B != 0)
-        z = (-Coefficent.A * x - Coefficent.C * y - Coefficent.D) / Coefficent.B;
+        z = (-Coefficent.A * x - Coefficent.B * y - Coefficent.D) / Coefficent.C;
     return z;
 }
 auto drawLineZBuffer(ZBufferCoefficent Coefficent, unsigned int x,unsigned int y,unsigned int x2, unsigned int y2,unsigned int r, unsigned int g, unsigned int b) {
@@ -423,7 +424,7 @@ auto ScanLineZBuffer(ZBufferCoefficent Coefficent, int x1, int y1, int x2, int y
     }
     
       for(i=0;i<k;i+=2){
-      drawLineZBuffer(Coefficent ,PointsX[i], y, PointsX[i+1]+1 ,y,r,g,b);//+1 ?
+      drawLineZBuffer(Coefficent ,PointsX[i], y, PointsX[i+1] ,y,r,g,b);//+1 ?
     }
   }
   for(i=0; i < 3;i++){
@@ -802,6 +803,12 @@ auto ReadVLF(){
 
 };
 int main(int argc, char * argv []) {
+   for (int i = 0; i < ScreenWidth; i++)
+  {
+    for(int j=0; j<ScreenHeight; j++){
+      MatrixZBuffer[i][j]=Inf;
+    }
+  }
  
  FHDRaster * raster = new FHDRaster();
 
