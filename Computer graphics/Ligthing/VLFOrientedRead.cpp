@@ -472,7 +472,7 @@ auto ZBufferFunction(int x1, int y1, int z1 ,int x2,int y2,  int z2, int x3, int
      ColorB=255;
   }*/
   cout<<ColorR<<" "<<ColorG<<" "<<ColorB<<endl;
-  ScanLineZBuffer(FaceCoefficents, x1,y1,x2,y2,x3,y3,ColorR ,ColorG, ColorB);
+  ScanLineZBuffer(FaceCoefficents, x1,y1,x2,y2,x3,y3,ColorR%255 ,ColorG%255, ColorB%255);
 }
 /*ZBuffer*/  
 
