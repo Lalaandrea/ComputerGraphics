@@ -30,7 +30,12 @@ int Rotation=1;//0=x; 1=y; 2=z;
 
     int NumVertexes,NumFaces,NumEdges;
                   
-
+typedef struct Color{
+  int r;
+  int g;
+  int b;
+  
+}ColorStruct;
 
 typedef struct DoubleCoordinates{
     double x;
@@ -260,13 +265,33 @@ class FHDRaster {
 /*ScanLine*/
 /* testing */
 
+auto CenterOfTrianglePoint(int x1,int y1,int z1,int x2,int y2,int z2,int x3,int y3,int z3){
+  DoubleCoord CenterOfTriangle;
+  CenterOfTriangle.x= (x1+x2+x3)/3;
+  CenterOfTriangle.y= (y1+y2+y3)/3;
+  CenterOfTriangle.z= (z1+z2+z3)/3;
+  return CenterOfTriangle;
 
+}
+
+auto LigthingFlat(int LigthX, int LigthY, int LigthZ,int  x1,int y1,int z1,int x2,int y2,int z2, int x3,int y3, int z3,int r,int g, int b){
+  DoubleCoord CenterOfTriangle=CenterOfTrianglePoint(x1,y1,z1,x2,y2,z2,x3,y3,z3);
+  int ZDistance=LigthZ-CenterOfTriangle.z;
+  ColorStruct ColorLigth;
+  ///Color of the ligth
+  ColorLigth.r=10;
+  ColorLigth.g=10;
+  ColorLigth.b=10;
+  ColorLigth.r=r*ZDistance/((ScreenWidth/4)/11);//ZDistance/XPixels
+  ColorLigth.g=g*ZDistance/((ScreenWidth/4)/11);
+  ColorLigth.b=b*ZDistance/((ScreenWidth/4)/11);
+  return ColorLigth;
+}
 /*ZBuffer*/
 ZBufferCoefficent CoefficentZBuffer(int x1, int y1, int z1 ,int x2,int y2,  int z2, int x3, int y3, int z3)
 {
 
     ZBufferCoefficent Coefficent;
-    //Point.A = (pt2.z - pt3.z) * (pt1.y - pt2.y) - (pt1.z - pt2.z) * (pt2.y - pt3.y);
     Coefficent.A = (z2 - z3) * (y1 - y2) - (z1 - z2) * (y2 - y3);
     Coefficent.B = (x2 - x3) * (z1 - z2) - (x1 - x2) * (z2 - z3);
     Coefficent.C = (y2 - y3) * (x1 - x2) - (y1 - y2) * (x2 - x3);
@@ -426,8 +451,26 @@ auto ScanLineZBuffer(ZBufferCoefficent Coefficent, int x1, int y1, int x2, int y
 
 auto ZBufferFunction(int x1, int y1, int z1 ,int x2,int y2,  int z2, int x3, int y3, int z3,int r, int g, int b){
   ZBufferCoefficent FaceCoefficents;
+  ColorStruct Ligth;
   FaceCoefficents= CoefficentZBuffer(x1,y1,z1,x2,y2,z2,x3,y3,z3);
-  ScanLineZBuffer(FaceCoefficents, x1,y1,x2,y2,x3,y3,r,g,b);
+  //int LigthX, int LigthY, int LigthZ, x1,int y1,int z1,int x2,int y2,int z2, int x3,int y3, int z3
+  Ligth=LigthingFlat(ScreenWidth/4,ScreenHeight/4,1000,x1,y1,z1,x2,y2,z2,x3,y3,z3,r,g,b);
+  int ColorR=  r+Ligth.r;
+  int ColorG=  g+Ligth.g;
+  int ColorB= b+Ligth.b;
+  if (ColorR>255)
+  {
+     ColorR=255;
+  }
+  else if (ColorG>255)
+  {
+     ColorG=255;
+  }
+  else if (ColorB>255)
+  {
+     ColorB=255;
+  }
+  ScanLineZBuffer(FaceCoefficents, x1,y1,x2,y2,x3,y3,ColorR ,ColorG, ColorB);
 }
 /*ZBuffer*/  
 
@@ -750,7 +793,7 @@ auto DrawZbuffer(){
         
       }
       //cout<<x1<<" "<<y1<<" "<<z1<<endl;
-      ZBufferFunction(ZBufferAuxiliar[0],ZBufferAuxiliar[1],ZBufferAuxiliar[2],ZBufferAuxiliar[3],ZBufferAuxiliar[4],ZBufferAuxiliar[5],ZBufferAuxiliar[6],ZBufferAuxiliar[7],ZBufferAuxiliar[8],rand()%255,rand()%255,rand()%255);
+      ZBufferFunction(ZBufferAuxiliar[0],ZBufferAuxiliar[1],ZBufferAuxiliar[2],ZBufferAuxiliar[3],ZBufferAuxiliar[4],ZBufferAuxiliar[5],ZBufferAuxiliar[6],ZBufferAuxiliar[7],ZBufferAuxiliar[8],100,100,100);
      //ScanLine(ZBufferAuxiliar[0],ZBufferAuxiliar[1],ZBufferAuxiliar[2],ZBufferAuxiliar[3],ZBufferAuxiliar[4],ZBufferAuxiliar[5]);
   }
   /*
