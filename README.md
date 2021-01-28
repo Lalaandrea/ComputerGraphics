@@ -66,3 +66,13 @@ g++ VLFOrientedRead.cpp -o Read -lgdi32
 
 ##### Scanline Only
 ![Scanlie](Scanline.PNG)
+
+## Flat Lighting
+
+For [Flat Lighting](https://github.com/Lalaandrea/ComputerGraphics/blob/main/Computer%20graphics/Ligthing/VLFOrientedRead.cpp)
+
+```bash
+g++ VLFOrientedRead.cpp -o Read -lgdi32 
+```
+![In pink](Ligth1.PNG)
+![In gray](Ligth2.PNG)

@@ -31,9 +31,9 @@ int Rotation=1;//0=x; 1=y; 2=z;
     int NumVertexes,NumFaces,NumEdges;
                   
 typedef struct Color{
-  int r;
-  int g;
-  int b;
+  float r;
+  float g;
+  float b;
   
 }ColorStruct;
 
@@ -282,9 +282,10 @@ auto LigthingFlat(int LigthX, int LigthY, int LigthZ,int  x1,int y1,int z1,int x
   ColorLigth.r=10;
   ColorLigth.g=10;
   ColorLigth.b=10;
-  ColorLigth.r=r*ZDistance/((ScreenWidth/4)/11);//ZDistance/XPixels
-  ColorLigth.g=g*ZDistance/((ScreenWidth/4)/11);
-  ColorLigth.b=b*ZDistance/((ScreenWidth/4)/11);
+  ColorLigth.r=(r*(ZDistance)/4)/11;//ZDistance/XPixels
+  ColorLigth.g=(g*(ZDistance)/4)/11;
+  ColorLigth.b=(b*(ZDistance)/4)/11;
+  //cout<<ColorLigth.r<<endl;
   return ColorLigth;
 }
 /*ZBuffer*/
@@ -458,18 +459,19 @@ auto ZBufferFunction(int x1, int y1, int z1 ,int x2,int y2,  int z2, int x3, int
   int ColorR=  r+Ligth.r;
   int ColorG=  g+Ligth.g;
   int ColorB= b+Ligth.b;
-  if (ColorR>255)
+  /*if (ColorR>255)
   {
      ColorR=255;
   }
-  else if (ColorG>255)
+  if (ColorG>255)
   {
      ColorG=255;
   }
-  else if (ColorB>255)
+  if (ColorB>255)
   {
      ColorB=255;
-  }
+  }*/
+  cout<<ColorR<<" "<<ColorG<<" "<<ColorB<<endl;
   ScanLineZBuffer(FaceCoefficents, x1,y1,x2,y2,x3,y3,ColorR ,ColorG, ColorB);
 }
 /*ZBuffer*/  
