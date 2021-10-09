@@ -27,7 +27,7 @@ For [Reading Obj, and make transformations](https://github.com/Lalaandrea/Comput
 ```bash
 g++ ObjTransformations.cpp -o ObjTrans -lgdi32
 ```
-![Screenshot](ObjMono.JNG)
+![Screenshot](ObjMono.jpg)
 
 ## Obj to VLF
 For [Obj to VLF](https://github.com/Lalaandrea/ComputerGraphics/blob/main/Computer%20graphics/VLF/ObjToVLF.cpp) compile as.
@@ -62,7 +62,7 @@ For [Reading VLF Oriented, ZBuffer and Scanline](https://github.com/Lalaandrea/C
 ```bash
 g++ VLFOrientedRead.cpp -o Read -lgdi32 
 ```
-![Read](Zbuffer.JPG)
+![Read](Zbuffer.jpg)
 ![Read](ZB.PNG)
 
 ##### Scanline Only
